@@ -4,10 +4,10 @@ class ProgressBar:
     global charset
     charset = "▏▎▍▌▋▊▉█"
 
-    def __init__(self, maxLength, maxCount, printCount=True, printPercentage=False, printTime=False):
-        self.maxLength = maxLength
+    def __init__(self, maxCount, maxLength=50, printCount=True, printPercentage=False, printTime=False):
         self.maxCount = maxCount
         self.currentCount = 0
+        self.maxLength = maxLength
         self.printCount = printCount
         self.printPercentage = printPercentage
         self.printTime = printTime
@@ -18,7 +18,11 @@ class ProgressBar:
         if maxCount:
             self.maxCount = maxCount
         self._print()
+        return
     
+    def grow(self):
+        return self.update(self.currentCount+1)
+
     def _print(self):
         percentage = float(self.currentCount)/float(self.maxCount)
         percentage = max(0., percentage)
@@ -55,7 +59,7 @@ class ProgressBar:
         print(string, end='')
 
 if __name__ == '__main__':
-    bar = ProgressBar(50, 500, printPercentage=True, printTime=True)
+    bar = ProgressBar(500, 50, printPercentage=True, printTime=True)
     import time
     for i in range(501):
         bar.update(i)
