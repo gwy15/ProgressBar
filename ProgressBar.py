@@ -37,6 +37,13 @@ class ProgressBar:
         string += '  ' * (self.maxLength - len(string)) # fill with blank
         string += charset[0] # print boarder
 
+        if self.printPercentage:
+            string = "%2.1f%% "%(percentage*100.,) + string
+        if self.printCount:
+            countStr = str(self.currentCount)+'/'+str(self.maxCount)
+            if self.printPercentage:
+                countStr = ' (%s)'%countStr
+            string += countStr
         if self.printTime:
             secondsSpent = math.floor(time.time() - self.startTime)
             if secondsSpent < 3600:
@@ -47,14 +54,7 @@ class ProgressBar:
                 days = secondsSpent // (3600*24)
                 seconds = secondsSpent % (3600*24)
                 timeStr = int(days) + time.strftime('days %H:M:%S', time.gmtime(seconds))
-            string = timeStr + ' ' + string
-        if self.printPercentage:
-            string += "%2.1f%% "%(percentage*100.,)
-        if self.printCount:
-            countStr = str(self.currentCount)+'/'+str(self.maxCount)
-            if self.printPercentage:
-                countStr = ' (%s)'%countStr
-            string += countStr
+            string += ' ' + timeStr
         string = '\r ' + string + '\r'
         print(string, end='')
 
