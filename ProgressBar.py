@@ -58,6 +58,9 @@ class ProgressBar:
         string = '\r ' + string + '\r'
         print(string, end='')
 
+    def __del__(self):
+        print()
+
 if __name__ == '__main__':
     bar = ProgressBar(500, 50, printPercentage=True, printTime=True)
     import time
