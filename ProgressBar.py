@@ -20,8 +20,8 @@ class ProgressBar:
         self._print()
         return
     
-    def grow(self):
-        return self.update(self.currentCount+1)
+    def grow(self, growCount=1):
+        return self.update(self.currentCount+growCount)
 
     def _print(self):
         percentage = float(self.currentCount)/float(self.maxCount)
