@@ -1,10 +1,12 @@
 import math
 import time
+from multiprocessing.dummy import Lock as ThreadLock
 class ProgressBar:
     global charset
     charset = "▏▎▍▌▋▊▉█"
 
     def __init__(self, maxCount, maxLength=50, printCount=True, printPercentage=True, printTime=False):
+        self.lock = ThreadLock()
         self.maxCount = maxCount
         self.currentCount = 0
         self.maxLength = maxLength
@@ -17,7 +19,9 @@ class ProgressBar:
         self.currentCount = currentCount
         if maxCount:
             self.maxCount = maxCount
+        self.lock.acquire()
         self._print()
+        self.lock.release()
         return
     
     def grow(self, growCount=1):
