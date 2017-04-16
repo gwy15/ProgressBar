@@ -1,6 +1,9 @@
+__author__ = 'gwy15'
+
 import math
 import time
 from multiprocessing.dummy import Lock as ThreadLock
+
 class ProgressBar:
     global charset
     charset = "▏▎▍▌▋▊▉█"
@@ -38,11 +41,13 @@ class ProgressBar:
         string =  charset[-1]*intPart # print main part
         if restPart > 0.01:
             string += charset[math.floor(restPart*len(charset))] # print rest part
-        string += '  ' * (self.maxLength - len(string)) # fill with blank
+        string += ' ' * (self.maxLength - len(string)) # fill with blank
         string += charset[0] # print boarder
 
         if self.printPercentage:
-            string = "%2.1f%% "%(percentage*100.,) + string
+            head = "%3.1f"%(percentage*100.,)
+            head = (5 - len(head))*' ' + head
+            string = head + "% " + string
         if self.printCount:
             countStr = str(self.currentCount)+'/'+str(self.maxCount)
             string += countStr
@@ -70,19 +75,3 @@ def growBar(bar:ProgressBar, *args, **kw):
             bar.grow(*args, **kw)
         return wrapper
     return decorator
-
-if __name__ == '__main__':
-    bar = ProgressBar(500, 50, printPercentage=True, printTime=True)
-    import time
-    for i in range(501):
-        bar.update(i)
-        time.sleep(0.01)
-
-    del bar
-    bar = ProgressBar(500, 40)
-    @growBar(bar, 2)
-    def fun(a):
-        time.sleep(0.01)
-    
-    for i in range(250):
-        fun(2)
